@@ -4,6 +4,7 @@ import TaskListItem from "./TaskListItem";
 
 type propsType = {
   type: string;
+  tasks: {id: string; title: string; category: "personal" | "work" | "other", state: "complete" | "incomplete", date: string }[];
 };
 
 const screenTypes: { [key: string]: object } = {
@@ -11,7 +12,7 @@ const screenTypes: { [key: string]: object } = {
   desktop: { gridTemplateColumns: "repeat(2,1fr)", gap: "1.25rem" },
 };
 
-function TaskList({ type }: propsType) {
+function TaskList({ type, tasks }: propsType) {
   return (
     <List
       sx={{
@@ -19,10 +20,13 @@ function TaskList({ type }: propsType) {
         ...screenTypes[type],
       }}
     >
-      <TaskListItem state="incomplete" />
-      <TaskListItem state="incomplete" />
-      <TaskListItem state="complete" />
-      <TaskListItem state="incomplete" />
+      {
+        tasks?.map(task => <TaskListItem key={task?.id} id={task?.id}
+          title={task?.title}
+          category={task?.category}
+          state={task?.state}
+          date={task?.date}/>)
+      }
     </List>
   );
 }

@@ -1,52 +1,73 @@
 // Libraries
-import { ListItem, IconButton, Stack, Text, Checkbox } from "@chakra-ui/react";
+import {
+  ListItem,
+  IconButton,
+  Stack,
+  Text,
+  Checkbox,
+  Heading,
+} from "@chakra-ui/react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 
 type propsType = {
-  state: "incomplete" | "complete";
+  id: string;
+  title: string;
+  category: "personal" | "work" | "other";
+  state: "complete" | "incomplete";
+  date: string;
 };
 
 const taskState: { [key: string]: boolean } = {
   incomplete: false,
   complete: true,
 };
-function TaskListItem({ state }: propsType) {
+function TaskListItem({ id, title, category, state, date }: propsType) {
   return (
-    <ListItem sx={{
-      backgroundColor: "#effafa",
-      borderRadius: "0.5rem"
-    }}>
-      <Stack padding="1rem 1.25rem" direction="row" alignItems="center" justifyContent="space-between">
+    <ListItem
+      sx={{
+        backgroundColor: "#effafa",
+        borderRadius: "0.5rem",
+      }}
+    >
+      <Stack
+        padding="1rem 1.25rem"
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between"
+      >
         <Stack direction="row" alignItems="center" gap="0.5rem">
-          <Checkbox
-            defaultChecked={taskState[state]}
-            sx={{
-              appearance: "none",
-              width: "1.25rem",
-              height: "1.25rem",
-              border: "2px solid #1f1f1f",
-              borderRadius: "0.25rem"
-            }}
-          />
+          <Checkbox defaultChecked={taskState[state]} />
           <Stack alignItems="start">
-            <Text textDecoration={"underline"} fontWeight="600" >
-              Title
-            </Text>
-            <Text fontWeight="400" >
-              category
+            <Heading
+              as="h4"
+              textDecoration={taskState[state] ? "line-through" : "none"}
+              fontSize="1rem"
+              fontWeight="700"
+            >
+              {title}
+            </Heading>
+            <Text
+              sx={{ "&.chakra-text": { margin: 0 } }}
+              color="#686667"
+              fontSize="0.812rem"
+              fontWeight="500"
+            >
+              {category}
             </Text>
           </Stack>
         </Stack>
 
         <Stack direction="row" gap="0.5rem">
           <IconButton
-            variant="solid"
+            boxSize={8}
+            variant="outline"
             colorScheme="red"
             aria-label="Delete Task"
             icon={<DeleteIcon />}
           />
           <IconButton
-            colorScheme="teal"
+            boxSize={8}
+            colorScheme="blue"
             aria-label="Edit Task"
             icon={<EditIcon />}
           />

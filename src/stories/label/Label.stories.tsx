@@ -11,12 +11,14 @@ type Story = StoryObj<typeof Label>;
 
 export const Selected: Story = {
   args: {
-    state: "selected"
+    state: "selected",
+    title: "Title"
   }
 }
 
 export const Unselected: Story = {
   args: {
-    state: "unselected"
+    state: "unselected",
+    title: "Title"
   }
 }

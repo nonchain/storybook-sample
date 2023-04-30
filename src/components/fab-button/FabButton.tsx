@@ -28,7 +28,10 @@ function FabButton({ size, type }: propsType) {
       sx={{
         ...sizeVariants[size],
         ...typeVariants[type],
-        borderRadius: "999px"
+        borderRadius: "999px",
+        position: "absolute",
+        bottom: "2.75rem",
+        left: "2.25rem"
       }}
     >
       <SmallAddIcon fontSize={iconSizeVariants[size]}/>
