@@ -26,10 +26,14 @@ export const useTask = (set) => ({
 
       return ({tasks: state?.tasks.concat(taskData)})
     }),
-    removeAllTasks: () =>
-    set(()=> {
-      localStorage.removeItem("task")
+    removeTask: (taskId: string) =>
+    set((state: {tasks: task[]})=> {
+      const newTaskList = state.tasks.filter(task => task.id !== taskId);
+      localStorage.setItem(
+        "tasks",
+        JSON.stringify(newTaskList)
+      )
 
-      return ({tasks: []})
+      return ({tasks: newTaskList})
     })
 });
