@@ -4,6 +4,7 @@ import { SmallAddIcon } from "@chakra-ui/icons";
 type propsType = {
   size: string;
   type: string;
+  onClick: React.MouseEventHandler
 };
 
 const sizeVariants: {[key: string]: object} = { 
@@ -22,9 +23,10 @@ const typeVariants: {[key: string]: object} = {
   accent: {backgroundColor: "#f3d422", color: "#181818"},
 }
 
-function FabButton({ size, type }: propsType) {
+function FabButton({ size, type, onClick }: propsType) {
   return (
     <Button
+      onClick={onClick}
       sx={{
         ...sizeVariants[size],
         ...typeVariants[type],
