@@ -22,6 +22,7 @@ const taskState: { [key: string]: boolean } = {
   complete: true,
 };
 function TaskListItem({ id, title, category, state, date }: propsType) {
+  const createdDate = new Date(date).toLocaleDateString();
   return (
     <ListItem
       sx={{
@@ -57,20 +58,23 @@ function TaskListItem({ id, title, category, state, date }: propsType) {
           </Stack>
         </Stack>
 
-        <Stack direction="row" gap="0.5rem">
-          <IconButton
-            boxSize={8}
-            variant="outline"
-            colorScheme="red"
-            aria-label="Delete Task"
-            icon={<DeleteIcon />}
-          />
-          <IconButton
-            boxSize={8}
-            colorScheme="blue"
-            aria-label="Edit Task"
-            icon={<EditIcon />}
-          />
+        <Stack alignItems="end">
+          <Text color="#545857" fontSize="0.65rem" fontWeight="500">{createdDate}</Text>
+          <Stack direction="row">
+            <IconButton
+              boxSize={8}
+              variant="outline"
+              colorScheme="red"
+              aria-label="Delete Task"
+              icon={<DeleteIcon />}
+            />
+            <IconButton
+              boxSize={8}
+              colorScheme="blue"
+              aria-label="Edit Task"
+              icon={<EditIcon />}
+            />
+          </Stack>
         </Stack>
       </Stack>
     </ListItem>
