@@ -22,18 +22,15 @@ export const useTask = (set) => ({
       localStorage.setItem(
         "tasks",
         JSON.stringify(state?.tasks.concat(taskData))
-      )
+      );
 
-      return ({tasks: state?.tasks.concat(taskData)})
+      return { tasks: state?.tasks.concat(taskData) };
     }),
-    removeTask: (taskId: string) =>
-    set((state: {tasks: task[]})=> {
-      const newTaskList = state.tasks.filter(task => task.id !== taskId);
-      localStorage.setItem(
-        "tasks",
-        JSON.stringify(newTaskList)
-      )
+  removeTask: (taskId: string) =>
+    set((state: { tasks: task[] }) => {
+      const newTaskList = state.tasks.filter((task) => task.id !== taskId);
+      localStorage.setItem("tasks", JSON.stringify(newTaskList));
 
-      return ({tasks: newTaskList})
-    })
+      return { tasks: newTaskList };
+    }),
 });
