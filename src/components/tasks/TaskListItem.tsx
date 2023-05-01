@@ -23,8 +23,14 @@ const taskState: { [key: string]: boolean } = {
   complete: true,
 };
 function TaskListItem({ id, title, category, state, date }: propsType) {
-  const { removeTask } = useStore();
+  const { removeTask, setModalType, openModal, closeModal } = useStore();
+
   const createdDate = new Date(date).toLocaleDateString();
+
+  const onOpenEditTaskModal = () => {
+    setModalType("edit-task");
+    openModal();
+  }
 
   return (
     <ListItem
@@ -77,6 +83,7 @@ function TaskListItem({ id, title, category, state, date }: propsType) {
               colorScheme="blue"
               aria-label="Edit Task"
               icon={<EditIcon />}
+              onClick={onOpenEditTaskModal}
             />
           </Stack>
         </Stack>
