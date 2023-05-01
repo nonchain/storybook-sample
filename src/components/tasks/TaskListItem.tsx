@@ -8,6 +8,7 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { useStore } from "../../app/stor";
 
 type propsType = {
   id: string;
@@ -22,7 +23,9 @@ const taskState: { [key: string]: boolean } = {
   complete: true,
 };
 function TaskListItem({ id, title, category, state, date }: propsType) {
+  const { removeTask } = useStore();
   const createdDate = new Date(date).toLocaleDateString();
+
   return (
     <ListItem
       sx={{
@@ -67,6 +70,7 @@ function TaskListItem({ id, title, category, state, date }: propsType) {
               colorScheme="red"
               aria-label="Delete Task"
               icon={<DeleteIcon />}
+              onClick={() => removeTask(id)}
             />
             <IconButton
               boxSize={8}
