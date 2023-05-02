@@ -1,6 +1,8 @@
 // Libraries
+import { useState } from "react";
 import { Input, Stack } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
+import { useStore } from "../../app/stor";
 
 type propsType = {
   type: string;
@@ -35,6 +37,14 @@ const typeVariants: { [key: string]: object } = {
 };
 
 function SearchBar({ type, hasIcon }: propsType) {
+  const [searchQuery, setSearchQuery] = useState<string>();
+  const { searchTasks } = useStore();
+
+  const onSearchQueryHandler = (event)=> {
+    setSearchQuery(event?.target?.value);
+    searchTasks(event?.target?.value)
+  }
+
   return (
     <Stack direction="row" alignItems="center" position="relative">
       <Input
@@ -43,6 +53,8 @@ function SearchBar({ type, hasIcon }: propsType) {
           ...typeVariants[type],
         }}
         placeholder="search"
+        value={searchQuery}
+        onChange={onSearchQueryHandler}
       />
       {hasIcon && (
         <SearchIcon position="absolute" right={hasIcon ? "1rem" : "auto"} />

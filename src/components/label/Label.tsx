@@ -1,9 +1,11 @@
 // Libraries
 import { useState } from "react";
 import { Stack, Text } from "@chakra-ui/react";
+import { useStore } from "../../app/stor";
 
 type propsType = {
   state: string;
+  id: string;
   title: string;
 };
 
@@ -20,14 +22,18 @@ const stateTypes: { [key: string]: object } = {
   },
 };
 
-function Label({ state, title }: propsType) {
+function Label({ title }: propsType) {
   const [selectLabel, setSelectLabel] = useState<string>("unselected");
+  const { filterTheTasks } = useStore();
+
+  const onSelectLabelHandler = () => {
+    setSelectLabel(selectLabel === "unselected" ? "selected" : "unselected")
+    filterTheTasks(title)
+  }
 
   return (
     <Stack
-      onClick={() =>
-        setSelectLabel(selectLabel === "unselected" ? "selected" : "unselected")
-      }
+      onClick={onSelectLabelHandler}
       sx={{
         "&.chakra-stack": { margin: 0 },
         width: "max-content",

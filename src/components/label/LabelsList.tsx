@@ -1,17 +1,29 @@
 // Libraries
-import { Stack } from "@chakra-ui/react"
-import Label from "./Label"
+import {
+  HStack,
+  Radio,
+  RadioGroup,
+} from "@chakra-ui/react";
+import { useStore } from "../../app/stor";
 
 type propsType = {
-  labels: {id: string; title: string;}[],
-}
+  labels: { id: string; title: string }[];
+};
 
 function LabelsList({ labels }: propsType) {
+  const { filterTheTasks } = useStore();
+
   return (
-    <Stack direction="row" flexWrap="wrap" gap="0.35rem">
-      {labels?.map((label) => <Label key={label?.id} state="unselected" title={label?.title}/>)}
-    </Stack>
-  )
+    <RadioGroup defaultValue="all">
+      <HStack spacing="8px">
+        {labels?.map((label) => 
+          <Radio onChange={()=> filterTheTasks(label?.id)} key={label?.id} id={label?.id} value={label?.id}>
+            {label?.title}
+          </Radio>
+        )}
+      </HStack>
+    </RadioGroup>
+  );
 }
 
-export default LabelsList
+export default LabelsList;
