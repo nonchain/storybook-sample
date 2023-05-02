@@ -35,7 +35,6 @@ type task = {
 };
 
 function App() {
-  const [isError, setIsError] = useState<boolean>(false);
   const {
     tasks,
     filteredCategory,
@@ -48,9 +47,9 @@ function App() {
     closeModal,
     selectedTask
   } = useStore();
- 
+  const taskList = filteredCategory === "all" ? [...tasks] : tasks?.filter((task: task) => task?.category === filteredCategory)
 
-  const taskList = filteredCategory === "all" ? [...tasks] : tasks?.filter(task => task?.category === filteredCategory)
+  const [isError, setIsError] = useState<boolean>(false);
 
   const onOpenAddTaskModal = () => {
     setModalType("add-task");
@@ -58,25 +57,6 @@ function App() {
   };
 
   const taskHandler = (actionType: string, data: task) => {
-    const task = actionType === "add-task" ? ({
-      id: data.id,
-      title: data?.title,
-      category: data.category,
-      state: "incomplete",
-      date: data.date,
-    }) : ({
-      id: selectedTask?.id,
-      title: data?.title,
-      category: data?.category || "no-category",
-      state: "incomplete",
-      date: selectedTask?.title,
-    })
-    console.log(
-      actionType,
-      {
-        task
-      }
-    );
     actionType === "add-task" ? addNewTask({
       id: data.id,
       title: data?.title,
@@ -179,7 +159,7 @@ function App() {
       >
         <Stack direction="column" gap="2rem">
           <Box width="68%">
-            <SearchBar type="outline" hasIcon={true} />
+            <SearchBar type="outline" hasIcon={true}/>
           </Box>
           <Stack direction="row" gap="4rem">
             <Stack flex={3} direction="column">

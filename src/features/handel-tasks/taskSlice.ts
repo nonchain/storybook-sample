@@ -19,7 +19,7 @@ export const useTask = (set) => ({
   tasks: readTasksFromStorage(),
   filteredCategory: "all",
   selectedTask: {},
-  setSelectedTask: (task: task) => set(()=> ({selectedTask: task})),
+  setSelectedTask: (task: task) => set(() => ({ selectedTask: task })),
   addNewTask: (taskData: task) =>
     set((state: { tasks: task[] }) => {
       localStorage.setItem(
@@ -55,13 +55,17 @@ export const useTask = (set) => ({
   filterTheTasks: (taskCategory: "all" | "personal" | "work" | "other") =>
     set(() => ({ filteredCategory: taskCategory })),
   searchTasks: (query: string) =>
-    set((state: { tasks: task[] }) => {
-      console.log(query);
-      const allTasks = state.tasks;
-      const searchResult = allTasks.filter((task) =>
-        task.title.startsWith(query)
-      );
-
-      return { asks: searchResult };
+    set(() => {
+      const taskListData = localStorage.getItem("tasks");
+      if (taskListData) {
+        const taskListArray = JSON.parse(taskListData);
+        const searchResult: task[] = taskListArray.filter((task: task) =>
+          task.title.toLowerCase().startsWith(query.toLowerCase())
+        );
+  
+        console.log(searchResult);
+        if(query.length <= 0) return { tasks: taskListArray };
+        return { tasks: searchResult };
+      }
     }),
 });

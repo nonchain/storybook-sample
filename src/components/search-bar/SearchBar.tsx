@@ -37,13 +37,7 @@ const typeVariants: { [key: string]: object } = {
 };
 
 function SearchBar({ type, hasIcon }: propsType) {
-  const [searchQuery, setSearchQuery] = useState<string>();
   const { searchTasks } = useStore();
-
-  const onSearchQueryHandler = (event)=> {
-    setSearchQuery(event?.target?.value);
-    searchTasks(event?.target?.value)
-  }
 
   return (
     <Stack direction="row" alignItems="center" position="relative">
@@ -53,8 +47,7 @@ function SearchBar({ type, hasIcon }: propsType) {
           ...typeVariants[type],
         }}
         placeholder="search"
-        value={searchQuery}
-        onChange={onSearchQueryHandler}
+        onChange={(event)=> searchTasks(event?.target?.value)}
       />
       {hasIcon && (
         <SearchIcon position="absolute" right={hasIcon ? "1rem" : "auto"} />
