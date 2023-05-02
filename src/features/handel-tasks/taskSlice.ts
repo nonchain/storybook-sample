@@ -1,3 +1,5 @@
+import { SetState } from "zustand";
+
 type task = {
   id: string;
   title: string;
@@ -15,7 +17,7 @@ const readTasksFromStorage = () => {
   return [];
 };
 
-export const useTask = (set) => ({
+export const useTask = ((set: SetState<object>) => ({
   tasks: readTasksFromStorage(),
   filteredCategory: "all",
   selectedTask: {},
@@ -69,4 +71,4 @@ export const useTask = (set) => ({
         return { tasks: searchResult };
       }
     }),
-});
+}));

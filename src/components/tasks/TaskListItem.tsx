@@ -1,5 +1,5 @@
 // Libraries
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   ListItem,
   IconButton,
@@ -10,14 +10,24 @@ import {
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { useStore } from "../../app/stor";
-
 type propsType = {
   id: string;
   title: string;
-  category: "personal" | "work" | "other";
+  category: string;
   state: "complete" | "incomplete";
   date: string;
 };
+
+type StoreType = {
+  updateTask: (newTask: propsType) => void;
+  setSelectedTask: (task: propsType) => void;
+  removeTask: (taskId: string) => void;
+  setModalType: (type: string) => void;
+  openModal: () => void;
+  closeModal: () => void;
+};
+
+
 
 const taskState: { [key: string]: boolean } = {
   incomplete: false,
@@ -30,7 +40,7 @@ function TaskListItem({ id, title, category, state, date }: propsType) {
     openModal,
     setSelectedTask,
     updateTask,
-  } = useStore();
+  } = useStore() as StoreType;
   const [checked, setChecked] = useState<boolean>(state === "complete");
 
   const createdDate = new Date(date).toLocaleDateString();

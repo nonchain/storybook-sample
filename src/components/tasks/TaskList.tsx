@@ -1,10 +1,16 @@
 // Libraries
-import { List } from "@chakra-ui/react";
+import { List, Text } from "@chakra-ui/react";
 import TaskListItem from "./TaskListItem";
 
 type propsType = {
   type: string;
-  tasks: {id: string; title: string; category: "personal" | "work" | "other", state: "complete" | "incomplete", date: string }[];
+  tasks: {
+    id: string;
+    title: string;
+    category: string;
+    state: "complete" | "incomplete";
+    date: string;
+  }[];
 };
 
 const screenTypes: { [key: string]: object } = {
@@ -20,13 +26,20 @@ function TaskList({ type, tasks }: propsType) {
         ...screenTypes[type],
       }}
     >
-      {
-        tasks?.map(task => <TaskListItem key={task?.id} id={task?.id}
-          title={task?.title}
-          category={task?.category}
-          state={task?.state}
-          date={task?.date}/>)
-      }
+      {tasks.length > 0 ? (
+        tasks?.map((task) => (
+          <TaskListItem
+            key={task?.id}
+            id={task?.id}
+            title={task?.title}
+            category={task?.category}
+            state={task?.state}
+            date={task?.date}
+          />
+        ))
+      ) : (
+        <Text>You don not have any task for now</Text>
+      )}
     </List>
   );
 }

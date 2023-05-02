@@ -31,7 +31,21 @@ type task = {
   id: string;
   title: string;
   category: string;
+  state: "complete" | "incomplete";
   date: string;
+};
+
+type StoreType = {
+  tasks: task[];
+  filteredCategory: string;
+  addNewTask: (taskData: task) => void;
+  updateTask: (newTask: task) => void;
+  modalType: string;
+  setModalType: (type: string) => void;
+  modalIsOpen: boolean;
+  openModal: () => void;
+  closeModal: () => void;
+  selectedTask: task;
 };
 
 function App() {
@@ -45,9 +59,12 @@ function App() {
     modalIsOpen,
     openModal,
     closeModal,
-    selectedTask
-  } = useStore();
-  const taskList = filteredCategory === "all" ? [...tasks] : tasks?.filter((task: task) => task?.category === filteredCategory)
+    selectedTask,
+  } = useStore() as StoreType;
+  const taskList =
+    filteredCategory === "all"
+      ? [...tasks]
+      : tasks?.filter((task: task) => task?.category === filteredCategory);
 
   const [isError, setIsError] = useState<boolean>(false);
 
@@ -57,25 +74,31 @@ function App() {
   };
 
   const taskHandler = (actionType: string, data: task) => {
-    actionType === "add-task" ? addNewTask({
-      id: data.id,
-      title: data?.title,
-      category: data.category  || "no-category",
-      state: "incomplete",
-      date: data.date,
-    }) : updateTask({
-      id: selectedTask?.id,
-      title: data?.title,
-      category: data?.category || "no-category",
-      state: selectedTask?.state,
-      date: selectedTask?.title,
-    });
-  }
+    actionType === "add-task"
+      ? addNewTask({
+          id: data.id,
+          title: data?.title,
+          category: data.category || "no-category",
+          state: data.state as "complete" | "incomplete",
+          date: data.date,
+        })
+      : updateTask({
+          id: selectedTask?.id,
+          title: data?.title,
+          category: data?.category || "no-category",
+          state: selectedTask?.state as "complete" | "incomplete",
+          date: selectedTask?.title,
+        });
+  };
 
-  const onSubmit = (event) => {
+  const onSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    const taskName = event?.target?.taskName?.value;
-    const category = event?.target?.category?.value;
+
+    const form = event.target as HTMLFormElement;
+    const formData = new FormData(form);
+
+    const taskName = formData.get("taskName") as string;
+    const category = formData.get("category") as string;
 
     if (taskName.length < 3) return setIsError(true);
     setIsError(false);
@@ -86,6 +109,7 @@ function App() {
       id: `${Math.floor(Math.random() * 100) + 1}`,
       title: taskName,
       category: category,
+      state: "incomplete",
       date: currentDate,
     });
 
@@ -113,13 +137,20 @@ function App() {
                 <FormControl>
                   <FormLabel>Task title</FormLabel>
                   <Input
-                    defaultValue={modalType === "add-task" ? "" : selectedTask?.title}
+                    defaultValue={
+                      modalType === "add-task" ? "" : selectedTask?.title
+                    }
                     name="taskName"
                     type="text"
                     placeholder="e.g React course"
                   />
                   {isError && (
-                    <Text mt="0.24rem" fontWeight="600" fontSize=".812rem" color="red.500">
+                    <Text
+                      mt="0.24rem"
+                      fontWeight="600"
+                      fontSize=".812rem"
+                      color="red.500"
+                    >
                       Enter at least 3 character
                     </Text>
                   )}
@@ -127,7 +158,9 @@ function App() {
                 <FormControl>
                   <FormLabel>Task category</FormLabel>
                   <Select
-                    defaultValue={modalType === "add-task" ? "" : selectedTask?.category}
+                    defaultValue={
+                      modalType === "add-task" ? "" : selectedTask?.category
+                    }
                     name="category"
                     variant="filled"
                     placeholder="Select Category"
@@ -159,7 +192,7 @@ function App() {
       >
         <Stack direction="column" gap="2rem">
           <Box width="68%">
-            <SearchBar type="outline" hasIcon={true}/>
+            <SearchBar type="outline" hasIcon={true} />
           </Box>
           <Stack direction="row" gap="4rem">
             <Stack flex={3} direction="column">
