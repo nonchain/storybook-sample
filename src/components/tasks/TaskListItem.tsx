@@ -1,4 +1,5 @@
 // Libraries
+import { useState, useEffect } from "react";
 import {
   ListItem,
   IconButton,
@@ -23,15 +24,29 @@ const taskState: { [key: string]: boolean } = {
   complete: true,
 };
 function TaskListItem({ id, title, category, state, date }: propsType) {
-  const { removeTask, setModalType, openModal, setSelectedTask } = useStore();
+  const {
+    removeTask,
+    setModalType,
+    openModal,
+    setSelectedTask,
+    updateTask,
+  } = useStore();
+  const [checked, setChecked] = useState<boolean>(state === "complete");
 
   const createdDate = new Date(date).toLocaleDateString();
 
   const onOpenEditTaskModal = () => {
     setModalType("edit-task");
-    setSelectedTask({ id, title, category, state, date })
+    setSelectedTask({ id, title, category, state, date });
     openModal();
-  }
+  };
+
+  const onCompleteTaskHandler = () => {
+    setChecked(()=>{
+      updateTask({ id, title, category, state: !checked ? "complete" : "incomplete", date });
+      return  !checked
+    });
+  };
 
   return (
     <ListItem
@@ -47,11 +62,15 @@ function TaskListItem({ id, title, category, state, date }: propsType) {
         justifyContent="space-between"
       >
         <Stack direction="row" alignItems="center" gap="0.5rem">
-          <Checkbox defaultChecked={taskState[state]} />
+          <Checkbox
+            defaultChecked={taskState[state]}
+            checked={checked}
+            onChange={onCompleteTaskHandler}
+          />
           <Stack alignItems="start">
             <Heading
               as="h4"
-              textDecoration={taskState[state] ? "line-through" : "none"}
+              textDecoration={checked ? "line-through" : "none"}
               fontSize="1rem"
               fontWeight="700"
             >
@@ -69,7 +88,9 @@ function TaskListItem({ id, title, category, state, date }: propsType) {
         </Stack>
 
         <Stack alignItems="end">
-          <Text color="#545857" fontSize="0.65rem" fontWeight="500">{createdDate}</Text>
+          <Text color="#545857" fontSize="0.65rem" fontWeight="500">
+            {createdDate}
+          </Text>
           <Stack direction="row">
             <IconButton
               boxSize={8}

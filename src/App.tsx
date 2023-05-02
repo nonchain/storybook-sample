@@ -67,7 +67,7 @@ function App() {
       id: selectedTask?.id,
       title: data?.title,
       category: data?.category || "no-category",
-      state: "incomplete",
+      state: selectedTask?.state,
       date: selectedTask?.title,
     });
   }

@@ -46,6 +46,7 @@ export const useTask = (set) => ({
           if (task.id === newTask.id) {
             task.title = newTask.title;
             task.category = newTask.category;
+            task.state = newTask.state;
           }
         });
         localStorage.setItem("tasks", JSON.stringify(taskListArray));
